@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+	<arg name="joy" default="false"/>
+
+    <param command="$(find xacro)/xacro $(find test_bot_description)/urdf/test_bot.xacro" name="robot_description"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+    <node name="differential" pkg="test_bot_firmware" type="differential.py" output="screen"/>
+
+    <include file="$(find test_bot_firmware)/launch/test_botS2.launch" />
+
+    <include file="$(find raspicam_node)/launch/camerav2_410x308_30fps.launch" />
+
+    <!--   <node name="camera" pkg="test_bot_camera" type="camera_node.py" /> -->
+
+    <group if="$(arg joy)">
+        <include file="$(find test_bot_firmware)/launch/joy_control.launch" />
+    </group>
+
+</launch>
